@@ -1,0 +1,141 @@
+/* Reset some default styles */
+html,
+body,
+div,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+img,
+strong,
+b,
+i,
+ol,
+ul,
+li,
+fieldset,
+form,
+label {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Global styles */
+.container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #333;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    overflow: hidden;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.navbar a,
+.navbar p {
+    margin-right: 10px;
+    color: white;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+@media (max-width: 400px) {
+  .navbar {
+    padding: 5px;
+  }
+
+  .navbar a,
+  .navbar p {
+    margin-right: 3px;
+    font-size: 12px;
+  }
+}
+
+/* Footer styles */
+.footer {
+  background-color: #333;
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+/* Page styles */
+.nft-container {
+    border: 3px solid #fff;
+    padding: 20px;
+}
+.content {
+    text-align: left;
+    width: auto;
+}
+
+.nft {
+    max-width: 100%;
+    height:auto;
+    float: left;
+    margin: 5px;
+    border: 5px solid #ccc;
+    padding: 10px;
+}
+  
+.no-nft-message {
+    margin-bottom: 20px;
+    text-align: center;
+}
+  
+.claim-button-container {
+    text-align: center;
+}
+  
+.button {
+    background-color: #4caf50;
+    color: black;
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}

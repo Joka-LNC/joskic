@@ -1,0 +1,79 @@
+{
+	"contracts": {
+		"NonFungibleToken": {
+			"source": "./flow/cadence/contracts/NonFungibleToken.cdc",
+			"aliases": {
+				"testnet": "0x631e88ae7f1d7c20"
+			}
+		},
+		"FungibleToken": {
+			"source": "./flow/cadence/contracts/FungibleToken.cdc",
+			"aliases": {
+				"emulator": "0xee82856bf20e2aa6",
+				"testnet": "0x9a0766d93b6608b7"
+			}
+		},
+		"MetadataViews": {
+			"source": "./flow/cadence/contracts/MetadataViews.cdc",
+			"aliases": {
+				"testnet": "0x631e88ae7f1d7c20"
+			}
+		},
+		"Joskicv2": {
+			"source": "./flow/cadence/contracts/Joskicv2.cdc",
+			"aliases": {
+				"testnet": "0x90f6eb85d9c0cc1d"
+			}
+		}
+	},
+	"networks": {
+		"emulator": "127.0.0.1:3569",
+		"mainnet": "access.mainnet.nodes.onflow.org:9000",
+		"testing": "127.0.0.1:3569",
+		"testnet": "access.devnet.nodes.onflow.org:9000"
+	},
+	"accounts": {
+		"emulator-account": {
+			"address": "f8d6e0586b0a20c7",
+			"key": "e9e836cfaa25e0d5330f6e5620368a60933a12fd5adf17d24d34e3167debbfa6"
+		},
+		"testnet-account": {
+			"address": "0x90f6eb85d9c0cc1d",
+			"key": {
+			  "type": "hex",
+			  "index": 0,
+			  "signatureAlgorithm": "ECDSA_secp256k1",
+			  "hashAlgorithm": "SHA2_256",
+			  "privateKey": "0814e1dd4c50979177e0cb13e9055a540d372d244603f09f553a319263e599a1"
+			}
+		},
+		"joka": {
+			"address": "0x17e8428a33d0b69e",
+			"key": {
+				"type": "hex",
+				"index": 0,
+				"signatureAlgorithm": "ECDSA_secp256k1",
+				"hashAlgorithm": "SHA2_256",
+				"privateKey": "f5db3782802bb73306cc9259141a5b87335ea07bf96577b56c05edbb503da78e"
+			}
+		}
+	},
+	"deployments": {
+		"emulator": {
+			"emulator-account": [
+				"FungibleToken",
+				"NonFungibleToken",
+				"MetadataViews",
+				"Joskicv2"
+			]
+		},
+		"testnet": {
+			"testnet-account": [
+				"FungibleToken",
+				"NonFungibleToken",
+				"MetadataViews",
+				"Joskicv2"
+			]
+		}
+	}
+}
