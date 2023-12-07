@@ -202,9 +202,10 @@ export default function Mint () {
       </Head>
       <div>
         {
-            adminAddresses.includes(user.addr?.toLowerCase()) ?
-        
-        (
+            adminAddresses.includes(user.addr?.toLowerCase()) 
+            ?
+
+                (
 
           <div>
             <input type='number' value={numNFTs} onChange={e => setNumNFTs(e.target.value)} />
@@ -223,11 +224,12 @@ export default function Mint () {
               ))}
             </div>
           </div>
-            ) : (
+                ) : (
 
           <div>
             {
-            hasCollection ?
+            hasCollection 
+            ?
 
                 (
 
@@ -243,9 +245,10 @@ export default function Mint () {
                 <button className='button' disabled>Claim NFTs</button>
                 <button className='button' onClick={createCollection}>Create Collection</button>
                 {
-                    txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' ?
-
+                    txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' 
+                    ?
                         (
+
                   <div>
                     <BeatLoader color='#123abc' loading={true} size={15} />
                     <p>{txStatus}</p>
@@ -257,7 +260,7 @@ export default function Mint () {
             </div>
                 )}
           </div>
-            )}
+                )}
       </div>
     </>
   )

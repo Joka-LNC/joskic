@@ -109,8 +109,8 @@ export default function Collected () {
         <div className='nft-container'>
             <div className='content'>
               {
-              collectionCreated && !collectionEmpty 
-              ?
+              collectionCreated && !collectionEmpty
+                ?
                   (
 
                     nfts.map((nft, index) => (
@@ -123,9 +123,9 @@ export default function Collected () {
                     <p>{`Attribute 4: ${nft.att4}`}</p>
                   </div>
                     ))
-                  ) 
-                :
-                        collectionCreated ?
+                  ) :
+
+                collectionCreated ?
 
                     (
 
@@ -138,9 +138,11 @@ export default function Collected () {
                     <div className='no-nft-message'>
                       <h1>Looks like you do not have a collection created in your account yet. Lets fix that!</h1>
                       <button className='button' onClick={createCollection}>Create Collection</button>
-                          {txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' ? 
+                          {txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' 
+                          ?
 
                               (
+
                         <div>
                           <BeatLoader color='#123abc' loading={true} size={15} />
                           <p>{txStatus}</p>
