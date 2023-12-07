@@ -35,14 +35,14 @@ const Navbar = () => {
       <div className='navbar-right'>
         {
           user.loggedIn
-              ?
+            ?
               (
               <>
                 <p>{user.addr}</p>
                 <button onClick={handleAuthentication}>Log Out</button>
               </>
               )
-              :
+            :
               (
               <button onClick={handleAuthentication}>Log In</button>
               )

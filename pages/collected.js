@@ -141,7 +141,7 @@ export default function Collected () {
                       <h1>Looks like you do not have a collection created in your account yet. Lets fix that!</h1>
                       <button className='button' onClick={createCollection}>Create Collection</button>
                           {txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...'
-                          ?
+                        ?
                               (
                         <div>
                           <BeatLoader color='#123abc' loading={true} size={15} />

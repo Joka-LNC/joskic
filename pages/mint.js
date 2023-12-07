@@ -252,7 +252,7 @@ export default function Mint () {
                           <p>{txStatus}</p>
                         </div>
                         )
-                        :
+                    :
                         (
                         <p>{txStatus}</p>
                         )
