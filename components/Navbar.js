@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import * as fcl from '@onflow/fcl'
 import '../flow/config.js'
-import { useState, useEffect } from 'react'
-import React from 'react'
+import { React, useState, useEffect } from 'react'
 
 const Navbar = () => {
   const [user, setUser] = useState({ loggedIn: false })
@@ -35,18 +34,19 @@ const Navbar = () => {
             </div>
             <div className='navbar-right'>
                     {
-                    user.loggedIn ?
-                
-                (
+                    user.loggedIn 
+                    ?
+
+                        (
 
                     <>
                         <p>{user.addr}</p>
                         <button onClick={handleAuthentication}>Log Out</button>
                     </>
-                    ) : (
+                        ) : (
 
                     <button onClick={handleAuthentication}>Log In</button>
-                    )}
+                        )}
             </div>
         </nav>
   )

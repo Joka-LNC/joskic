@@ -2,7 +2,7 @@ import Head from 'next/head'
 import * as fcl from '@onflow/fcl'
 import Link from 'next/link'
 import { BeatLoader } from 'react-spinners'
-import { useState, useEffect } from 'react'
+import { React, useState, useEffect } from 'react'
 
 export default function Collected () {
   const [nfts, setNfts] = useState([])
@@ -109,10 +109,11 @@ export default function Collected () {
         <div className='nft-container'>
             <div className='content'>
               {
-              collectionCreated && !collectionEmpty ? 
-              (
+              collectionCreated && !collectionEmpty 
+              ?
+                  (
 
-                nfts.map((nft, index) => (
+                    nfts.map((nft, index) => (
                   <div key={index} className='nft'>
                     <h2>{`ID: ${nft.id}`}</h2>
                     <p>{`Name: ${nft.name}`}</p>
@@ -121,11 +122,12 @@ export default function Collected () {
                     <p>{`Attribute 3: ${nft.att3}`}</p>
                     <p>{`Attribute 4: ${nft.att4}`}</p>
                   </div>
-                ))
-                ) :
-                    collectionCreated ?
-              
-              (
+                    ))
+                  ) 
+                :
+                        collectionCreated ?
+
+                    (
 
                     <div className='no-nft-message'>
                       <h1>User currently does not own any NFTs from this collection. Lets change that!</h1>
@@ -137,16 +139,16 @@ export default function Collected () {
                       <h1>Looks like you do not have a collection created in your account yet. Lets fix that!</h1>
                       <button className='button' onClick={createCollection}>Create Collection</button>
                           {txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' ? 
-                      
-                      (
+
+                              (
                         <div>
                           <BeatLoader color='#123abc' loading={true} size={15} />
                           <p>{txStatus}</p>
                         </div>
-                          ) : (
+                              ) : (
 
                         <p>{txStatus}</p>
-                          )}
+                              )}
                     </div>
                     )}
             </div>
