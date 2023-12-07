@@ -111,7 +111,7 @@ export default function Collected() {
             <meta name="author" content="Ivan Joskić"/>
             <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         </Head>
-        <div className="collected-container">
+        <div className="nft-container">
             <div className="content">
               {collectionCreated && !collectionEmpty ? (
                 nfts.map((nft, index) => (
@@ -127,12 +127,12 @@ export default function Collected() {
               ) : collectionCreated ? (
                     <div className="no-nft-message">
                       <h1>User currently doesn't own any NFTs from this collection. Let's change that!</h1>
-                      <button className="claim-button"><Link href="/mint">Mint</Link></button>
+                      <button className="button"><Link href="/mint">Mint</Link></button>
                     </div>
                   ) : (
                     <div className="no-nft-message">
                       <h1>Looks like you don't have a collection created in your account yet. Let's fix that!</h1>
-                      <button onClick={createCollection}>Create Collection</button>
+                      <button className="button" onClick={createCollection}>Create Collection</button>
                       {txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' ? (
                         <div>
                           <BeatLoader color="#123abc" loading={true} size={15} />

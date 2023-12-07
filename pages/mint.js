@@ -1,10 +1,11 @@
-import Head from 'next/head';
-import * as fcl from '@onflow/fcl';
-import { BeatLoader } from 'react-spinners';
-import { React, useState, useEffect } from 'react';
+import Head from "next/head";
+import { useEffect, useState } from 'react';
+import * as fcl from "@onflow/fcl";
+import React from 'react';
+import { BeatLoader } from "react-spinners";
 
 export default function Mint() {
-  const adminAddresses = ['0x90f6eb85d9c0cc1d'];
+  const adminAddresses = ["0x90f6eb85d9c0cc1d"];
   const [hasCollection, setHasCollection] = useState(true);
   const [user, setUser] = useState({ loggedIn: null });
   const [nfts, setNfts] = useState([]);
@@ -13,6 +14,7 @@ export default function Mint() {
     typeof window !== 'undefined' ? localStorage.getItem('userAddress') : null;
   const [numNFTsLeft, setNumNFTsLeft] = useState(0);
   const [txStatus, setTxStatus] = useState('');
+
 
   useEffect(() => {
     return fcl.currentUser().subscribe((user) => {
@@ -63,21 +65,21 @@ export default function Mint() {
       Array.from({ length: 4 }, () => Math.floor(Math.random() * 40) + 60)
     );
     const transactionId = await fcl.mutate({
-      cadence: `
-        import Joskicv2 from 0x90f6eb85d9c0cc1d
-        import NonFungibleToken from 0x631e88ae7f1d7c20
-        import MetadataViews from 0x631e88ae7f1d7c20
-        transaction(attributes: [[UInt64]]) {
-          prepare(acct: AuthAccount) {
-            let minterRef = acct.borrow<&Joskicv2.NFTMinter>(from: /storage/Joskicv2NFTMinter) ?? panic('Could not borrow reference to NFTMinter resource');
-            for attributeSet in attributes {
-              minterRef.mintNFT(att1: attributeSet[0], att2: attributeSet[1], att3: attributeSet[2], att4: attributeSet[3]);
-            }
-          }
-          execute {
-            log('NFTs minted.');
-          }
-        }`,
+      cadence: `import Joskicv2 from 0x90f6eb85d9c0cc1d
+                import NonFungibleToken from 0x631e88ae7f1d7c20
+                import MetadataViews from 0x631e88ae7f1d7c20
+                transaction(attributes: [[UInt64]]) {
+                  prepare(acct: AuthAccount) {
+                    let minterRef = acct.borrow<&Joskicv2.NFTMinter>(from: /storage/Joskicv2NFTMinter)
+                      ?? panic("Could not borrow reference to NFTMinter resource")
+                    for attributeSet in attributes {
+                      minterRef.mintNFT(att1: attributeSet[0], att2: attributeSet[1], att3: attributeSet[2], att4: attributeSet[3])
+                    }
+                  }
+                  execute {
+                    log("NFTs minted.")
+                  }
+      }`,
       args: (arg, t) => [arg(attributes, t.Array(t.Array(t.UInt64)))],
       proposer: fcl.currentUser().authorization,
       payer: fcl.currentUser().authorization,
@@ -97,8 +99,9 @@ export default function Mint() {
 
         transaction(numNFTs: Int) {
           prepare(acct: AuthAccount) {
-            let collectionRef = acct.borrow<&Joskicv2.Collection{NonFungibleToken.CollectionPublic}>(from: Joskicv2.CollectionStoragePath) ?? panic('Could not borrow reference to Collection');
-            var i = 0;
+            let collectionRef = acct.borrow<&Joskicv2.Collection{NonFungibleToken.CollectionPublic}>(from: Joskicv2.CollectionStoragePath)
+              ?? panic("Could not borrow reference to Collection")
+            var i = 0
             while i < numNFTs {
               let nft <- Joskicv2.claimNFT();
               collectionRef.deposit(token: <-nft);
@@ -106,7 +109,7 @@ export default function Mint() {
             }
           }
           execute {
-            log('NFTs claimed.');
+            log("NFTs claimed.")
           }
         }`,
       args: (arg, t) => [arg(numNFTs, t.Int)],
@@ -164,7 +167,7 @@ export default function Mint() {
                        }
                      }
                      execute {
-                       log('Collection created.');
+                       log("Collection created.")
                      }
                    }`,
         args: (arg, t) => [],
@@ -173,10 +176,8 @@ export default function Mint() {
         authorizations: [fcl.authz],
         limit: 999,
       });
-
-      console.log('Transaction ID: ' + transactionId);
-
-      fcl.tx(transactionId).subscribe((res) => {
+      console.log("Transaction ID: " + transactionId);
+      fcl.tx(transactionId).subscribe(res => {
         console.log(res);
         if (res.status === 0 || res.status === 1) {
           setTxStatus('Pending...');
@@ -199,27 +200,20 @@ export default function Mint() {
     <>
       <Head>
         <title>Završni rad Ivan Joskić</title>
-        <meta charset='UTF-8' />
-        <meta name='description' content='Završni rad Ivan Joskić' />
-        <meta name='keywords' content='HTML, CSS, JavaScript' />
-        <meta name='author' content='Ivan Joskić' />
-        <meta
-          name='viewport'
-          content='width=device-width, initial-scale=1.0'
-        />
+        <meta charset="UTF-8"/>
+        <meta name="description" content="Završni rad Ivan Joskić"/>
+        <meta name="keywords" content="HTML, CSS, JavaScript"/>
+        <meta name="author" content="Ivan Joskić"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       </Head>
       <div>
         {adminAddresses.includes(user.addr?.toLowerCase()) ? (
           <div>
-            <input
-              type='number'
-              value={numNFTs}
-              onChange={(e) => setNumNFTs(e.target.value)}
-            />
+            <input type="number" value={numNFTs} onChange={e => setNumNFTs(e.target.value)} />
             <button onClick={mintNFTs}>Mint NFTs</button>
-            <div className='nft-container'>
+            <div className="nft-container">
               {nfts.map((nft, index) => (
-                <div key={index} className='nft'>
+                <div key={index} className="nft">
                   <h2>{`ID: ${nft.id}`}</h2>
                   <p>{`Name: ${nft.name}`}</p>
                   <p>{`Attribute 1: ${nft.att1}`}</p>
@@ -233,32 +227,19 @@ export default function Mint() {
         ) : (
           <div>
             {hasCollection ? (
-              <div className='no-nft-message'>
+              <div className="no-nft-message">
                 <p>{`Number of NFTs left to be claimed: ${numNFTsLeft}`}</p>
-                <input
-                  type='number'
-                  value={numNFTs}
-                  onChange={(e) => setNumNFTs(e.target.value)}
-                />
-                <button
-                  className='button'
-                  onClick={() => claimNFTs(numNFTs)}
-                >
-                  Claim NFTs
-                </button>
+                <input type="number" value={numNFTs} onChange={(e) => setNumNFTs(e.target.value)} />
+                <button className="button" onClick={() => claimNFTs(numNFTs)}>Claim NFTs</button>
               </div>
             ) : (
-              <div className='no-nft-message'>
+              <div className="no-nft-message">
                 <p>{`Number of NFTs left to be claimed: ${numNFTsLeft}`}</p>
-                <button className='button' disabled>
-                  Claim NFTs
-                </button>
-                <button className='button' onClick={createCollection}>
-                  Create Collection
-                </button>
+                <button className="button" disabled>Claim NFTs</button>
+                <button className="button" onClick={createCollection}>Create Collection</button>
                 {txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' ? (
                   <div>
-                    <BeatLoader color='#123abc' loading={true} size={15} />
+                    <BeatLoader color="#123abc" loading={true} size={15} />
                     <p>{txStatus}</p>
                   </div>
                 ) : (
