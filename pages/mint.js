@@ -230,32 +230,29 @@ export default function Mint () {
             {
             hasCollection 
             ?
-
                 (
-
-              <div className='no-nft-message'>
-                <p>{`Number of NFTs left to be claimed: ${numNFTsLeft}`}</p>
-                <input type='number' value={numNFTs} onChange={(e) => setNumNFTs(e.target.value)} />
-                <button className='button' onClick={() => claimNFTs(numNFTs)}>Claim NFTs</button>
-              </div>
-                ) : (
-
-              <div className='no-nft-message'>
-                <p>{`Number of NFTs left to be claimed: ${numNFTsLeft}`}</p>
-                <button className='button' disabled>Claim NFTs</button>
-                <button className='button' onClick={createCollection}>Create Collection</button>
+                <div className='no-nft-message'>
+                  <p>{`Number of NFTs left to be claimed: ${numNFTsLeft}`}</p>
+                  <input type='number' value={numNFTs} onChange={(e) => setNumNFTs(e.target.value)} />
+                  <button className='button' onClick={() => claimNFTs(numNFTs)}>Claim NFTs</button>
+                </div>
+                ) : 
+                (
+                <div className='no-nft-message'>
+                  <p>{`Number of NFTs left to be claimed: ${numNFTsLeft}`}</p>
+                  <button className='button' disabled>Claim NFTs</button>
+                  <button className='button' onClick={createCollection}>Create Collection</button>
                 {
                     txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' 
                     ?
                         (
-
-                  <div>
-                    <BeatLoader color='#123abc' loading={true} size={15} />
-                    <p>{txStatus}</p>
-                  </div>
-                        ) : (
-
-                  <p>{txStatus}</p>
+                        <div>
+                          <BeatLoader color='#123abc' loading={true} size={15} />
+                          <p>{txStatus}</p>
+                        </div>
+                        ) : 
+                        (
+                        <p>{txStatus}</p>
                         )}
             </div>
                 )}
