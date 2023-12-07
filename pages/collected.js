@@ -124,7 +124,7 @@ export default function Collected () {
                   </div>
                     ))
                   )
-                  :
+                :
                 collectionCreated
                   ?
                     (
@@ -134,7 +134,7 @@ export default function Collected () {
                       <button className='button'><Link href='/mint'>Mint</Link></button>
                     </div>
                     )
-                    :
+                  :
                     (
 
                     <div className='no-nft-message'>
@@ -148,7 +148,7 @@ export default function Collected () {
                           <p>{txStatus}</p>
                         </div>
                               )
-                              :
+                            :
                               (
 
                         <p>{txStatus}</p>
