@@ -1,26 +1,25 @@
-import Head from 'next/head';
-import { useEffect, useState } from 'react';
-import * as fcl from '@onflow/fcl';
-import React from 'react';
-import { BeatLoader } from 'react-spinners';
+import Head from 'next/head'
+import * as fcl from '@onflow/fcl'
+import React from 'react'
+import { BeatLoader } from 'react-spinners'
 
-export default function Mint() {
-  const adminAddresses = ['0x90f6eb85d9c0cc1d'];
-  const [hasCollection, setHasCollection] = useState(true);
-  const [user, setUser] = useState({ loggedIn: null });
-  const [nfts, setNfts] = useState([]);
+export default function Mint () {
+  const adminAddresses = ['0x90f6eb85d9c0cc1d']
+  const [hasCollection, setHasCollection] = useState(true)
+  const [user, setUser] = useState({ loggedIn: null })
+  const [nfts, setNfts] = useState([])
   const [numNFTs, setNumNFTs] = useState(1)
-  const userAddress = typeof window !== 'undefined' ? localStorage.getItem('userAddress') : null;
-  const [numNFTsLeft, setNumNFTsLeft] = useState(0);
-  const [txStatus, setTxStatus] = useState('');
+  const userAddress = typeof window !== 'undefined' ? localStorage.getItem('userAddress') : null
+  const [numNFTsLeft, setNumNFTsLeft] = useState(0)
+  const [txStatus, setTxStatus] = useState('')
 
   useEffect(() => {
     return fcl.currentUser().subscribe(user => {
-      console.log('User:', user.addr);
-      setUser(user);
-      readClaimableNFTs(user.addr);
-    });
-  }, []);  
+      console.log('User:', user.addr)
+      setUser(user)
+      readClaimableNFTs(user.addr)
+    })
+  }, [])
 
   if (userAddress) {
     try {
@@ -30,32 +29,32 @@ export default function Mint() {
                                          pub fun main(address: Address): Bool {
                                            let collectionCapability = getAccount(address).getCapability<&Joskicv2.Collection{NonFungibleToken.CollectionPublic, MetadataViews.ResolverCollection}>(Joskicv2.CollectionPublicPath)
                                            return collectionCapability.check()
-                                         }`;
+                                         }`
       fcl.query({
         cadence: collectionExists,
-        args: (arg, t) => [arg(userAddress, t.Address)],
+        args: (arg, t) => [arg(userAddress, t.Address)]
       }).then(response => {
         if (response) {
           // Collection capability found, handle accordingly
-          setHasCollection(true);
+          setHasCollection(true)
         } else {
           // No collection capability, handle accordingly
-          setHasCollection(false);
+          setHasCollection(false)
         }
       }).catch(error => {
-        console.error('Error checking collection capability:', error);
+        console.error('Error checking collection capability:', error)
         // Handle error accordingly
-        setHasCollection(false);
-      });
+        setHasCollection(false)
+      })
     } catch (error) {
-      console.error('Error in try block:', error);
+      console.error('Error in try block:', error)
       // Handle error accordingly
-      setHasCollection(false);
+      setHasCollection(false)
     }
   }
 
   const mintNFTs = async () => {
-    const attributes = Array.from({ length: numNFTs }, () => Array.from({ length: 4 }, () => Math.floor(Math.random() * 40) +60))
+    const attributes = Array.from({ length: numNFTs }, () => Array.from({ length: 4 }, () => Math.floor(Math.random() * 40) + 60))
     
     const transactionId = await fcl.mutate({
       cadence: `import Joskicv2 from 0x90f6eb85d9c0cc1d
@@ -77,7 +76,7 @@ export default function Mint() {
       proposer: fcl.currentUser().authorization,
       payer: fcl.currentUser().authorization,
       limit: 999
-    });
+    })
   
     const transaction = await fcl.tx(transactionId).onceSealed()
     console.log(transaction)
@@ -107,19 +106,18 @@ export default function Mint() {
         }
       `,
       args: (arg, t) => [
-        arg(numNFTs, t.Int),
+        arg(numNFTs, t.Int)
       ],
       proposer: fcl.currentUser().authorization,
       payer: fcl.currentUser().authorization,
       limit: 999,
-    });
-  
-    const transaction = await fcl.tx(transactionId).onceSealed();
-    console.log(transaction);
-  };
+    })  
+    const transaction = await fcl.tx(transactionId).onceSealed()
+    console.log(transaction)
+  }
 
   const readClaimableNFTs = async (userAddress) => {
-    const isAdmin = adminAddresses.includes(userAddress);
+    const isAdmin = adminAddresses.includes(userAddress)
     const response = await fcl.send([
       fcl.script`
         import Joskicv2 from 0x90f6eb85d9c0cc1d
@@ -139,16 +137,16 @@ export default function Mint() {
           return answer
         }
       `,
-    ]);
+    ])
   
-    const data = await fcl.decode(response);
-    console.log('Number of claimable NFTs:', data.length);
-    setNumNFTsLeft(data.length);
+    const data = await fcl.decode(response)
+    console.log('Number of claimable NFTs:', data.length)
+    setNumNFTsLeft(data.length)
     if (isAdmin) {
-      console.log('NFTs:', nfts);
-      setNfts(data);
+      console.log('NFTs:', nfts)
+      setNfts(data)
     }
-  };
+  }
 
   const createCollection = async () => {
     try {
@@ -172,26 +170,26 @@ export default function Mint() {
         payer: fcl.authz,
         authorizations: [fcl.authz],
         limit: 999,
-      });
-      console.log('Transaction ID: ' + transactionId);
+      })
+      console.log('Transaction ID: ' + transactionId)
       fcl.tx(transactionId).subscribe(res => {
-        console.log(res);
+        console.log(res)
         if (res.status === 0 || res.status === 1) {
-          setTxStatus('Pending...');
+          setTxStatus('Pending...')
         } else if (res.status === 2) {
-          setTxStatus('Finalized...');
+          setTxStatus('Finalized...')
         } else if (res.status === 3) {
-          setTxStatus('Executed...');
+          setTxStatus('Executed...')
         } else if (res.status === 4) {
-          setTxStatus('Sealed!');
-          setCollectionCreated(true);
+          setTxStatus('Sealed!')
+          setCollectionCreated(true)
         }
-      });
+      })
     } catch (error) {
-      console.error('Error creating collection:', error);
-      setTxStatus('Transaction failed');
+      console.error('Error creating collection:', error)
+      setTxStatus('Transaction failed')
     }
-  };
+  }
 
   return (
     <>
@@ -205,6 +203,7 @@ export default function Mint() {
       </Head>
       <div>
         {adminAddresses.includes(user.addr?.toLowerCase()) ? (
+
           <div>
             <input type='number' value={numNFTs} onChange={e => setNumNFTs(e.target.value)} />
             <button onClick={mintNFTs}>Mint NFTs</button>
@@ -224,12 +223,14 @@ export default function Mint() {
         ) : (
           <div>
             {hasCollection ? (
+
               <div className='no-nft-message'>
                 <p>{`Number of NFTs left to be claimed: ${numNFTsLeft}`}</p>
                 <input type='number' value={numNFTs} onChange={(e) => setNumNFTs(e.target.value)} />
                 <button className='button' onClick={() => claimNFTs(numNFTs)}>Claim NFTs</button>
               </div>
             ) : (
+
               <div className='no-nft-message'>
                 <p>{`Number of NFTs left to be claimed: ${numNFTsLeft}`}</p>
                 <button className='button' disabled>Claim NFTs</button>

@@ -1,18 +1,17 @@
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
 import * as fcl from '@onflow/fcl'
 import React from 'react'
 import Link from 'next/link'
 import { BeatLoader } from 'react-spinners'
 
 export default function Collected() {
-  const [nfts, setNfts] = useState([]);
-  const [collectionCreated, setCollectionCreated] = useState(true);
-  const [collectionEmpty, setCollectionEmpty] = useState(false);
-  const [txStatus, setTxStatus] = useState('');
+  const [nfts, setNfts] = useState ([])
+  const [collectionCreated, setCollectionCreated] = useState(true)
+  const [collectionEmpty, setCollectionEmpty] = useState(false)
+  const [txStatus, setTxStatus] = useState('')
 
   useEffect(() => {
-    const userAddress = localStorage.getItem('userAddress');
+    const userAddress = localStorage.getItem('userAddress')
 
     if (userAddress) {
       try {
@@ -31,28 +30,28 @@ export default function Collected() {
                                       answer.append(customMetadata)
                                     }
                                     return answer
-                                  } `;
+                                  } `
         fcl.query({
           cadence: readAccountNFTs,
-          args: (arg, t) => [arg(userAddress, t.Address)],
+          args: (arg, t) => [arg(userAddress, t.Address)]
         }).then(response => {
           if (response.length === 0) {
-            setCollectionEmpty(true);
-            setCollectionCreated(true);
+            setCollectionEmpty(true)
+            setCollectionCreated(true)
           } else {
-            setNfts(response);
-            setCollectionCreated(true);
+            setNfts(response)
+            setCollectionCreated(true)
           }
         }).catch(error => {
-          console.error('Error fetching NFTs:', error);
-          setCollectionCreated(false);
-        });
+          console.error('Error fetching NFTs:', error)
+          setCollectionCreated(false)
+        })
       } catch (error) {
-        console.error('Error in try block:', error);
-        setCollectionCreated(false);
+        console.error('Error in try block:', error)
+        setCollectionCreated(false)
       }
     }
-  }, []);
+  }, [])
 
   const createCollection = async () => {
     try {
@@ -76,26 +75,26 @@ export default function Collected() {
         payer: fcl.authz,
         authorizations: [fcl.authz],
         limit: 999
-      });
-      console.log('Transaction ID: ' + transactionId);
+      })
+      console.log('Transaction ID: ' + transactionId)
       fcl.tx(transactionId).subscribe(res => {
-        console.log(res);
+        console.log(res)
         if (res.status === 0 || res.status === 1) {
-          setTxStatus('Pending...');
+          setTxStatus('Pending...')
         } else if (res.status === 2) {
-          setTxStatus('Finalized...');
+          setTxStatus('Finalized...')
         } else if (res.status === 3) {
-          setTxStatus('Executed...');
+          setTxStatus('Executed...')
         } else if (res.status === 4) {
-          setTxStatus('Sealed!');
-          setCollectionCreated(true);
+          setTxStatus('Sealed!')
+          setCollectionCreated(true)
         }
-      });
+      })
     } catch (error) {
-      console.error('Error creating collection:', error);
-      setTxStatus('Transaction failed');
+      console.error('Error creating collection:', error)
+      setTxStatus('Transaction failed')
     }
-  };
+  }
 
   return (
     <>
@@ -110,7 +109,8 @@ export default function Collected() {
         <div className='nft-container'>
             <div className='content'>
               {collectionCreated && !collectionEmpty ? (
-                nfts.map((nft, index) => (
+               
+               nfts.map((nft, index) => (
                   <div key={index} className='nft'>
                     <h2>{`ID: ${nft.id}`}</h2>
                     <p>{`Name: ${nft.name}`}</p>
@@ -121,11 +121,13 @@ export default function Collected() {
                   </div>
                 ))
               ) : collectionCreated ? (
+
                     <div className='no-nft-message'>
                       <h1>User currently doesn't own any NFTs from this collection. Let's change that!</h1>
                       <button className='button'><Link href='/mint'>Mint</Link></button>
                     </div>
                   ) : (
+
                     <div className='no-nft-message'>
                       <h1>Looks like you don't have a collection created in your account yet. Let's fix that!</h1>
                       <button className='button' onClick={createCollection}>Create Collection</button>
@@ -142,5 +144,5 @@ export default function Collected() {
             </div>
         </div>
     </>
-);
+)
 }
