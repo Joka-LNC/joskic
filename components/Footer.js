@@ -1,9 +1,11 @@
+import React from 'react'
+
 const Footer = () => {
-    return (
+  return (
     <footer className='footer'>
         Created by Ivan Joskić
     </footer>
-    );
+  )
 }
 
 export default Footer

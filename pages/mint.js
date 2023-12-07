@@ -111,7 +111,7 @@ export default function Mint () {
       proposer: fcl.currentUser().authorization,
       payer: fcl.currentUser().authorization,
       limit: 999,
-    })  
+    }) 
     const transaction = await fcl.tx(transactionId).onceSealed()
     console.log(transaction)
   }
@@ -204,12 +204,14 @@ export default function Mint () {
       <div>
         {adminAddresses.includes(user.addr?.toLowerCase()) ? (
 
+
           <div>
             <input type='number' value={numNFTs} onChange={e => setNumNFTs(e.target.value)} />
             <button onClick={mintNFTs}>Mint NFTs</button>
             <div className='nft-container'>
               {nfts.map((nft, index) => (
                 
+
                 <div key={index} className='nft'>
                   <h2>{`ID: ${nft.id}`}</h2>
                   <p>{`Name: ${nft.name}`}</p>
@@ -222,8 +224,10 @@ export default function Mint () {
             </div>
           </div>
         ) : (
+
           <div>
             {hasCollection ? (
+
 
               <div className='no-nft-message'>
                 <p>{`Number of NFTs left to be claimed: ${numNFTsLeft}`}</p>
@@ -232,17 +236,20 @@ export default function Mint () {
               </div>
             ) : (
 
+
               <div className='no-nft-message'>
                 <p>{`Number of NFTs left to be claimed: ${numNFTsLeft}`}</p>
                 <button className='button' disabled>Claim NFTs</button>
                 <button className='button' onClick={createCollection}>Create Collection</button>
                 {txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' ? (
 
+
                   <div>
                     <BeatLoader color='#123abc' loading={true} size={15} />
                     <p>{txStatus}</p>
                   </div>
                 ) : (
+                  
 
                   <p>{txStatus}</p>
                 )}
