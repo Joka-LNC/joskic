@@ -4,26 +4,26 @@ import * as fcl from '@onflow/fcl'
 import '../flow/config.js'
 import React from 'react'
 
-const Navbar = () => {
+const Navbar = () =>{
     
-    const [user, setUser] = useState({ loggedIn: false });
+    const [user, setUser] = useState({ loggedIn: false })
 
     useEffect(() => {
         fcl.currentUser.subscribe(user => {
-            setUser(user);
+            setUser(user)
             if (user.loggedIn) {
-                localStorage.setItem('userAddress', user.addr);
+                localStorage.setItem('userAddress', user.addr)
             } else {
-                localStorage.removeItem('userAddress');
+                localStorage.removeItem('userAddress')
             }
-        });
+        })
     }, [])
 
     function handleAuthentication() {
         if (user.loggedIn) {
-            fcl.unauthenticate();
+            fcl.unauthenticate()
         } else {
-            fcl.authenticate();
+            fcl.authenticate()
         }
     }
 
@@ -45,7 +45,7 @@ const Navbar = () => {
                 )}
             </div>
         </nav>
-    );
+    )
 }
- 
-export default Navbar;
+
+export default Navbar

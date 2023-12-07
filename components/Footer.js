@@ -1,9 +1,9 @@
 const Footer = () => {
     return (
-        <footer className='footer'>
-            Created by Ivan Joskić
-        </footer>
+    <footer className='footer'>
+        Created by Ivan Joskić
+    </footer>
     );
 }
- 
-export default Footer;
+
+export default Footer
