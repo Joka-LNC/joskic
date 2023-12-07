@@ -2,6 +2,7 @@ import Head from 'next/head'
 import * as fcl from '@onflow/fcl'
 import React from 'react'
 import { BeatLoader } from 'react-spinners'
+import { useState, useEffect } from 'react'
 
 export default function Mint () {
   const adminAddresses = ['0x90f6eb85d9c0cc1d']
@@ -54,8 +55,7 @@ export default function Mint () {
   }
 
   const mintNFTs = async () => {
-    const attributes = Array.from({ length: numNFTs }, () => Array.from({ length: 4 }, () => Math.floor(Math.random() * 40) + 60))
-    
+    const attributes = Array.from({ length: numNFTs }, () => Array.from({ length: 4 }, () => Math.floor(Math.random() * 40) + 60))    
     const transactionId = await fcl.mutate({
       cadence: `import Joskicv2 from 0x90f6eb85d9c0cc1d
                 import NonFungibleToken from 0x631e88ae7f1d7c20
@@ -182,7 +182,7 @@ export default function Mint () {
           setTxStatus('Executed...')
         } else if (res.status === 4) {
           setTxStatus('Sealed!')
-          setCollectionCreated(true)
+          setHasCollection(true)
         }
       })
     } catch (error) {
@@ -226,8 +226,9 @@ export default function Mint () {
         ) : (
 
           <div>
-            {hasCollection ? (
-
+            {
+            hasCollection ? 
+            (
 
               <div className='no-nft-message'>
                 <p>{`Number of NFTs left to be claimed: ${numNFTsLeft}`}</p>
@@ -236,21 +237,19 @@ export default function Mint () {
               </div>
             ) : (
 
-
               <div className='no-nft-message'>
                 <p>{`Number of NFTs left to be claimed: ${numNFTsLeft}`}</p>
                 <button className='button' disabled>Claim NFTs</button>
                 <button className='button' onClick={createCollection}>Create Collection</button>
-                {txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' ? (
-
-
+                {
+                txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' ? 
+                (
                   <div>
                     <BeatLoader color='#123abc' loading={true} size={15} />
                     <p>{txStatus}</p>
                   </div>
                 ) : (
-                  
-
+                 
                   <p>{txStatus}</p>
                 )}
             </div>

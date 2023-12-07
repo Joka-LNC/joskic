@@ -2,6 +2,7 @@ import Link from 'next/link'
 import * as fcl from '@onflow/fcl'
 import '../flow/config.js'
 import { useState, useEffect } from 'react'
+import React from 'react'
 
 const Navbar = () => { 
   const [user, setUser] = useState({ loggedIn: false })
