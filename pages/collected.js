@@ -3,9 +3,10 @@ import * as fcl from '@onflow/fcl'
 import React from 'react'
 import Link from 'next/link'
 import { BeatLoader } from 'react-spinners'
+import { useState, useEffect } from 'react'
 
-export default function Collected() {
-  const [nfts, setNfts] = useState ([])
+export default function Collected () {
+  const [nfts, setNfts] = useState([])
   const [collectionCreated, setCollectionCreated] = useState(true)
   const [collectionEmpty, setCollectionEmpty] = useState(false)
   const [txStatus, setTxStatus] = useState('')
@@ -109,6 +110,7 @@ export default function Collected() {
         <div className='nft-container'>
             <div className='content'>
               {collectionCreated && !collectionEmpty ? (
+
                
                nfts.map((nft, index) => (
                   <div key={index} className='nft'>
@@ -122,11 +124,13 @@ export default function Collected() {
                 ))
               ) : collectionCreated ? (
 
+
                     <div className='no-nft-message'>
                       <h1>User currently doesn't own any NFTs from this collection. Let's change that!</h1>
                       <button className='button'><Link href='/mint'>Mint</Link></button>
                     </div>
                   ) : (
+
 
                     <div className='no-nft-message'>
                       <h1>Looks like you don't have a collection created in your account yet. Let's fix that!</h1>
@@ -137,6 +141,7 @@ export default function Collected() {
                           <p>{txStatus}</p>
                         </div>
                       ) : (
+                        
                         <p>{txStatus}</p>
                       )}
                     </div>
