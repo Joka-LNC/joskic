@@ -3,7 +3,7 @@ import * as fcl from '@onflow/fcl'
 import '../flow/config.js'
 import { useState, useEffect } from 'react'
 
-const Navbar = () => {  
+const Navbar = () => { 
   const [user, setUser] = useState({ loggedIn: false })
 
   useEffect(() => {
@@ -12,7 +12,7 @@ const Navbar = () => {
       if (user.loggedIn) {
         localStorage.setItem('userAddress', user.addr)
       } else {
-         localStorage.removeItem('userAddress')
+        localStorage.removeItem('userAddress')
       }
     })
   }, [])
@@ -33,8 +33,8 @@ const Navbar = () => {
                 <Link href='/collected'>Collected</Link>
             </div>
             <div className='navbar-right'>
-                {user.loggedIn ? (
-
+                {user.loggedIn ? 
+                (
 
                     <>
                         <p>{user.addr}</p>
