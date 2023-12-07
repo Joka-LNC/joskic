@@ -1,8 +1,7 @@
 import Head from 'next/head'
 import * as fcl from '@onflow/fcl'
-import React from 'react'
 import { BeatLoader } from 'react-spinners'
-import { useState, useEffect } from 'react'
+import { React, useState, useEffect } from 'react'
 
 export default function Mint () {
   const adminAddresses = ['0x90f6eb85d9c0cc1d']
@@ -55,7 +54,7 @@ export default function Mint () {
   }
 
   const mintNFTs = async () => {
-    const attributes = Array.from({ length: numNFTs }, () => Array.from({ length: 4 }, () => Math.floor(Math.random() * 40) + 60))    
+    const attributes = Array.from({ length: numNFTs }, () => Array.from({ length: 4 }, () => Math.floor(Math.random() * 40) + 60))
     const transactionId = await fcl.mutate({
       cadence: `import Joskicv2 from 0x90f6eb85d9c0cc1d
                 import NonFungibleToken from 0x631e88ae7f1d7c20
@@ -77,7 +76,7 @@ export default function Mint () {
       payer: fcl.currentUser().authorization,
       limit: 999
     })
-  
+
     const transaction = await fcl.tx(transactionId).onceSealed()
     console.log(transaction)
   }
@@ -110,8 +109,8 @@ export default function Mint () {
       ],
       proposer: fcl.currentUser().authorization,
       payer: fcl.currentUser().authorization,
-      limit: 999,
-    }) 
+      limit: 999
+    })
     const transaction = await fcl.tx(transactionId).onceSealed()
     console.log(transaction)
   }
@@ -136,9 +135,9 @@ export default function Mint () {
           }
           return answer
         }
-      `,
+      `
     ])
-  
+
     const data = await fcl.decode(response)
     console.log('Number of claimable NFTs:', data.length)
     setNumNFTsLeft(data.length)
@@ -169,7 +168,7 @@ export default function Mint () {
         proposer: fcl.authz,
         payer: fcl.authz,
         authorizations: [fcl.authz],
-        limit: 999,
+        limit: 999
       })
       console.log('Transaction ID: ' + transactionId)
       fcl.tx(transactionId).subscribe(res => {
@@ -202,7 +201,9 @@ export default function Mint () {
         <meta name='viewport' content='width=device-width, initial-scale=1.0'/>
       </Head>
       <div>
-        {adminAddresses.includes(user.addr?.toLowerCase()) ? (
+        {
+        adminAddresses.includes(user.addr?.toLowerCase()) ? 
+        (
 
 
           <div>
@@ -227,7 +228,8 @@ export default function Mint () {
 
           <div>
             {
-            hasCollection ? 
+            hasCollection ?
+            
             (
 
               <div className='no-nft-message'>
@@ -235,25 +237,26 @@ export default function Mint () {
                 <input type='number' value={numNFTs} onChange={(e) => setNumNFTs(e.target.value)} />
                 <button className='button' onClick={() => claimNFTs(numNFTs)}>Claim NFTs</button>
               </div>
-            ) : (
+                ) : (
 
               <div className='no-nft-message'>
                 <p>{`Number of NFTs left to be claimed: ${numNFTsLeft}`}</p>
                 <button className='button' disabled>Claim NFTs</button>
                 <button className='button' onClick={createCollection}>Create Collection</button>
                 {
-                txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' ? 
+                    txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' ?
+                
                 (
                   <div>
                     <BeatLoader color='#123abc' loading={true} size={15} />
                     <p>{txStatus}</p>
                   </div>
-                ) : (
-                 
+                    ) : (
+                
                   <p>{txStatus}</p>
-                )}
+                    )}
             </div>
-            )}
+                )}
           </div>
         )}
       </div>

@@ -4,7 +4,7 @@ import '../flow/config.js'
 import { useState, useEffect } from 'react'
 import React from 'react'
 
-const Navbar = () => { 
+const Navbar = () => {
   const [user, setUser] = useState({ loggedIn: false })
 
   useEffect(() => {
@@ -34,17 +34,19 @@ const Navbar = () => {
                 <Link href='/collected'>Collected</Link>
             </div>
             <div className='navbar-right'>
-                {user.loggedIn ? 
+                    {
+                    user.loggedIn ?
+                
                 (
 
                     <>
                         <p>{user.addr}</p>
                         <button onClick={handleAuthentication}>Log Out</button>
                     </>
-                ) : (
+                    ) : (
 
                     <button onClick={handleAuthentication}>Log In</button>
-                )}
+                    )}
             </div>
         </nav>
   )
