@@ -1,9 +1,9 @@
-import Head from 'next/head';
-import { useEffect, useState } from 'react';
-import * as fcl from '@onflow/fcl';
-import React from 'react';
-import Link from 'next/link';
-import { BeatLoader } from 'react-spinners';
+import Head from 'next/head'
+import { useEffect, useState } from 'react'
+import * as fcl from '@onflow/fcl'
+import React from 'react'
+import Link from 'next/link'
+import { BeatLoader } from 'react-spinners'
 
 export default function Collected() {
   const [nfts, setNfts] = useState([]);
@@ -75,7 +75,7 @@ export default function Collected() {
         proposer: fcl.authz,
         payer: fcl.authz,
         authorizations: [fcl.authz],
-        limit: 999,
+        limit: 999
       });
       console.log('Transaction ID: ' + transactionId);
       fcl.tx(transactionId).subscribe(res => {
