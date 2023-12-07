@@ -1,33 +1,30 @@
 import Link from 'next/link'
-import { useState, useEffect } from 'react'
 import * as fcl from '@onflow/fcl'
 import '../flow/config.js'
-import React from 'react'
 
-const Navbar = () =>{
-    
-    const [user, setUser] = useState({ loggedIn: false })
+const Navbar = () => {   
+  const [user, setUser] = useState({ loggedIn: false })
 
-    useEffect(() => {
-        fcl.currentUser.subscribe(user => {
-            setUser(user)
-            if (user.loggedIn) {
-                localStorage.setItem('userAddress', user.addr)
-            } else {
-                localStorage.removeItem('userAddress')
-            }
-        })
-    }, [])
+  useEffect(() => {
+    fcl.currentUser.subscribe(user => {
+      setUser(user)
+      if (user.loggedIn) {
+        localStorage.setItem('userAddress', user.addr)
+      } else {
+         localStorage.removeItem('userAddress')
+      }
+    })
+  }, [])
 
-    function handleAuthentication() {
-        if (user.loggedIn) {
-            fcl.unauthenticate()
-        } else {
-            fcl.authenticate()
-        }
+  function handleAuthentication () {
+    if (user.loggedIn) {
+      fcl.unauthenticate()
+    } else {
+      fcl.authenticate()
     }
+  }
 
-    return (
+  return (
         <nav className='navbar'>
             <div className='navbar-left'>
                 <Link href='/'>Home</Link>
@@ -36,16 +33,18 @@ const Navbar = () =>{
             </div>
             <div className='navbar-right'>
                 {user.loggedIn ? (
+
                     <>
                         <p>{user.addr}</p>
                         <button onClick={handleAuthentication}>Log Out</button>
                     </>
                 ) : (
+
                     <button onClick={handleAuthentication}>Log In</button>
                 )}
             </div>
         </nav>
-    )
+  )
 }
 
 export default Navbar

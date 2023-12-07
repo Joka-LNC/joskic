@@ -209,6 +209,7 @@ export default function Mint () {
             <button onClick={mintNFTs}>Mint NFTs</button>
             <div className='nft-container'>
               {nfts.map((nft, index) => (
+                
                 <div key={index} className='nft'>
                   <h2>{`ID: ${nft.id}`}</h2>
                   <p>{`Name: ${nft.name}`}</p>
@@ -236,11 +237,13 @@ export default function Mint () {
                 <button className='button' disabled>Claim NFTs</button>
                 <button className='button' onClick={createCollection}>Create Collection</button>
                 {txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' ? (
+
                   <div>
                     <BeatLoader color='#123abc' loading={true} size={15} />
                     <p>{txStatus}</p>
                   </div>
                 ) : (
+
                   <p>{txStatus}</p>
                 )}
             </div>
