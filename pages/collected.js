@@ -123,31 +123,33 @@ export default function Collected () {
                     <p>{`Attribute 4: ${nft.att4}`}</p>
                   </div>
                     ))
-                  ) :
-
-                collectionCreated ?
-
+                  )
+                  :
+                collectionCreated
+                  ?
                     (
 
                     <div className='no-nft-message'>
                       <h1>User currently does not own any NFTs from this collection. Lets change that!</h1>
                       <button className='button'><Link href='/mint'>Mint</Link></button>
                     </div>
-                    ) : (
+                    )
+                    :
+                    (
 
                     <div className='no-nft-message'>
                       <h1>Looks like you do not have a collection created in your account yet. Lets fix that!</h1>
                       <button className='button' onClick={createCollection}>Create Collection</button>
-                          {txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' 
+                          {txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...'
                           ?
-
                               (
-
                         <div>
                           <BeatLoader color='#123abc' loading={true} size={15} />
                           <p>{txStatus}</p>
                         </div>
-                              ) : (
+                              )
+                              :
+                              (
 
                         <p>{txStatus}</p>
                               )}

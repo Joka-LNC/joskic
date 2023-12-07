@@ -202,55 +202,57 @@ export default function Mint () {
       </Head>
       <div>
         {
-            adminAddresses.includes(user.addr?.toLowerCase()) 
+            adminAddresses.includes(user.addr?.toLowerCase())
             ?
+                (
+                <div>
+                  <input type='number' value={numNFTs} onChange={e => setNumNFTs(e.target.value)} />
+                  <button onClick={mintNFTs}>Mint NFTs</button>
+                  <div className='nft-container'>
+                    {nfts.map((nft, index) => (
 
+                      <div key={index} className='nft'>
+                        <h2>{`ID: ${nft.id}`}</h2>
+                        <p>{`Name: ${nft.name}`}</p>
+                        <p>{`Attribute 1: ${nft.att1}`}</p>
+                        <p>{`Attribute 2: ${nft.att2}`}</p>
+                        <p>{`Attribute 3: ${nft.att3}`}</p>
+                        <p>{`Attribute 4: ${nft.att4}`}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                )
+                :
                 (
 
           <div>
-            <input type='number' value={numNFTs} onChange={e => setNumNFTs(e.target.value)} />
-            <button onClick={mintNFTs}>Mint NFTs</button>
-            <div className='nft-container'>
-              {nfts.map((nft, index) => (
-
-                <div key={index} className='nft'>
-                  <h2>{`ID: ${nft.id}`}</h2>
-                  <p>{`Name: ${nft.name}`}</p>
-                  <p>{`Attribute 1: ${nft.att1}`}</p>
-                  <p>{`Attribute 2: ${nft.att2}`}</p>
-                  <p>{`Attribute 3: ${nft.att3}`}</p>
-                  <p>{`Attribute 4: ${nft.att4}`}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-                ) : (
-
-          <div>
             {
-            hasCollection 
-            ?
+            hasCollection
+              ?
                 (
                 <div className='no-nft-message'>
                   <p>{`Number of NFTs left to be claimed: ${numNFTsLeft}`}</p>
                   <input type='number' value={numNFTs} onChange={(e) => setNumNFTs(e.target.value)} />
                   <button className='button' onClick={() => claimNFTs(numNFTs)}>Claim NFTs</button>
                 </div>
-                ) : 
+                )
+                :
                 (
                 <div className='no-nft-message'>
                   <p>{`Number of NFTs left to be claimed: ${numNFTsLeft}`}</p>
                   <button className='button' disabled>Claim NFTs</button>
                   <button className='button' onClick={createCollection}>Create Collection</button>
                 {
-                    txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' 
-                    ?
+                    txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...'
+                      ?
                         (
                         <div>
                           <BeatLoader color='#123abc' loading={true} size={15} />
                           <p>{txStatus}</p>
                         </div>
-                        ) : 
+                        )
+                        :
                         (
                         <p>{txStatus}</p>
                         )}
