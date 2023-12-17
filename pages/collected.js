@@ -11,10 +11,17 @@ export default function Collected() {
   const [collectionEmpty, setCollectionEmpty] = useState(false);
   const [txStatus, setTxStatus] = useState('');
   const [recipient, setRecipient] = useState('');
+  const [user, setUser] = useState({ loggedIn: null });
+
+  useEffect(() => {
+    return fcl.currentUser().subscribe(user => {
+      console.log('User:', user.addr)
+      setUser(user)
+    })
+  }, [])
 
   useEffect(() => {
     const userAddress = localStorage.getItem('userAddress');
-
     if (userAddress) {
       try {
         const readAccountNFTs = ` import Joskicv2 from 0x90f6eb85d9c0cc1d
@@ -94,7 +101,6 @@ export default function Collected() {
         } else if (res.status === 4) {
           setTxStatus('Sealed!');
           setCollectionCreated(true);
-          window.location.reload();
         }
       });
     } catch (error) {
@@ -148,67 +154,70 @@ export default function Collected() {
         setTxStatus('Executed...');
       } else if (res.status === 4) {
         setTxStatus('Sealed!');
-        window.location.reload();
       }
     });
   }
 
   return (
     <>
-        <Head>
-            <title>Završni rad Ivan Joskić</title>
-            <meta charset="UTF-8"/>
-            <meta name="description" content="No Art Project"/>
-            <meta name="keywords" content="HTML, CSS, JavaScript"/>
-            <meta name="author" content="Ivan Joskić"/>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        </Head>
+      <Head>
+        <title>Završni rad Ivan Joskić</title>
+        <meta charset="UTF-8"/>
+        <meta name="description" content="No Art Project"/>
+        <meta name="keywords" content="HTML, CSS, JavaScript"/>
+        <meta name="author" content="Ivan Joskić"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      </Head>
+      {user.loggedIn ? (
         <div className="collected-container">
-            <div className="content">
-              {collectionCreated && !collectionEmpty ? (
-                nfts.map((nft, index) => (
-                  <div key={index} className="nft">
-                    <h2>{`ID: ${nft.id}`}</h2>
-                    <p>{`Name: ${nft.name}`}</p>
-                    <p>{`Attribute 1: ${nft.att1}`}</p>
-                    <p>{`Attribute 2: ${nft.att2}`}</p>
-                    <p>{`Attribute 3: ${nft.att3}`}</p>
-                    <p>{`Attribute 4: ${nft.att4}`}</p>
-                    <input type="text" onChange={e => setRecipient(e.target.value)}></input>
-                    <button onClick={() => {
-                      transferNFT(recipient, nft.id);
-                      setRecipient('');
-                    }}>Transfer</button>
-                  </div>
-                ))
-              ) : collectionCreated ? (
-                    <div className="no-nft-message">
-                      <h1>User currently doesn't own any NFTs from this collection. Let's change that!</h1>
-                      <button className="claim-button"><Link href="/mint">Mint</Link></button>
-                    </div>
-                  ) : (
-                    <div className="no-nft-message">
-                      <h1>Looks like you don't have a collection created in your account yet. Let's fix that!</h1>
-                      <button onClick={createCollection}>Create Collection</button>
-                    </div>
-                  )}
-            </div>
-        </div>
-        {txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' || txStatus === 'Sealed!' ? (
-          <div className="loader-popup">
-              <ProgressBar
-                height="80"
-                width="80"
-                ariaLabel="progress-bar-loading"
-                wrapperStyle={{}}
-                wrapperClass="progress-bar-wrapper"
-                borderColor = '#F4442E'
-                barColor = '#51E5FF'
-              />
-              <p>{txStatus}</p>
-              {txStatus === 'Sealed!' && <button onClick={() => setTxStatus('Run Transaction')}>OK</button>}
+          <div className="content">
+            {collectionCreated && !collectionEmpty ? (
+              nfts.map((nft, index) => (
+                <div key={index} className="nft">
+                  <h2>{`ID: ${nft.id}`}</h2>
+                  <p>{`Name: ${nft.name}`}</p>
+                  <p>{`Attribute 1: ${nft.att1}`}</p>
+                  <p>{`Attribute 2: ${nft.att2}`}</p>
+                  <p>{`Attribute 3: ${nft.att3}`}</p>
+                  <p>{`Attribute 4: ${nft.att4}`}</p>
+                  <input type="text" onChange={e => setRecipient(e.target.value)}></input>
+                  <button onClick={() => {
+                    transferNFT(recipient, nft.id);
+                    setRecipient('');
+                  }}>Transfer</button>
+                </div>
+              ))
+            ) : collectionCreated ? (
+              <div className="no-nft-message">
+                <h1>User currently doesn't own any NFTs from this collection. Let's change that!</h1>
+                <button className="claim-button"><Link href="/mint">Mint</Link></button>
+              </div>
+            ) : (
+              <div className="no-nft-message">
+                <h1>Looks like you don't have a collection created in your account yet. Let's fix that!</h1>
+                <button onClick={createCollection}>Create Collection</button>
+              </div>
+            )}
           </div>
+        </div>
+      ) : (
+        <h1 className="no-nft-message">Please log in to see page content.</h1>
+      )}
+      {txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' || txStatus === 'Sealed!' ? (
+        <div className="loader-popup">
+          <ProgressBar
+            height="80"
+            width="80"
+            ariaLabel="progress-bar-loading"
+            wrapperStyle={{}}
+            wrapperClass="progress-bar-wrapper"
+            borderColor = '#F4442E'
+            barColor = '#51E5FF'
+          />
+          <p>{txStatus}</p>
+          {txStatus === 'Sealed!' && <button onClick={() => { setTxStatus('Run Transaction'); window.location.reload(); }}>OK</button>}
+        </div>
       ) : null}
     </>
-);
+  );
 }
