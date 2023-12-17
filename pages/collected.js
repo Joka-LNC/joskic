@@ -202,8 +202,8 @@ export default function Collected() {
       {txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' || txStatus === 'Sealed!' ? (
         <div className="loader-popup">
           <ProgressBar
-            height="80"
-            width="80"
+            height="100"
+            width="100"
             ariaLabel="progress-bar-loading"
             wrapperStyle={{}}
             wrapperClass="progress-bar-wrapper"
