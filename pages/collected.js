@@ -3,13 +3,14 @@ import { useEffect, useState } from 'react';
 import * as fcl from "@onflow/fcl";
 import React from 'react';
 import Link from "next/link";
-import { BeatLoader } from "react-spinners";
+import { ProgressBar } from  'react-loader-spinner';
 
 export default function Collected() {
   const [nfts, setNfts] = useState([]);
   const [collectionCreated, setCollectionCreated] = useState(true);
   const [collectionEmpty, setCollectionEmpty] = useState(false);
   const [txStatus, setTxStatus] = useState('');
+  const [recipient, setRecipient] = useState('');
 
   useEffect(() => {
     const userAddress = localStorage.getItem('userAddress');
@@ -93,6 +94,7 @@ export default function Collected() {
         } else if (res.status === 4) {
           setTxStatus('Sealed!');
           setCollectionCreated(true);
+          window.location.reload();
         }
       });
     } catch (error) {
@@ -100,6 +102,56 @@ export default function Collected() {
       setTxStatus('Transaction failed');
     }
   };
+
+  async function transferNFT(recipient, withdrawID) {
+
+    const transactionId = await fcl.mutate({
+      cadence: `
+      import Joskicv2 from 0x90f6eb85d9c0cc1d
+      import NonFungibleToken from 0x631e88ae7f1d7c20
+
+      transaction(recipient: Address, withdrawID: UInt64) {
+        let ProviderCollection: &Joskicv2.Collection{NonFungibleToken.Provider}
+        let RecipientCollection: &Joskicv2.Collection{NonFungibleToken.CollectionPublic}
+        
+        prepare(signer: AuthAccount) {
+          self.ProviderCollection = signer.borrow<&Joskicv2.Collection{NonFungibleToken.Provider}>(from: Joskicv2.CollectionStoragePath)
+                                      ?? panic("This user does not have a Collection.")
+      
+          self.RecipientCollection = getAccount(recipient).getCapability(Joskicv2.CollectionPublicPath)
+                                      .borrow<&Joskicv2.Collection{NonFungibleToken.CollectionPublic}>()!
+        }
+      
+        execute {
+          self.RecipientCollection.deposit(token: <- self.ProviderCollection.withdraw(withdrawID: withdrawID))
+        }
+      }
+      `,
+      args: (arg, t) => [
+        arg(recipient, t.Address),
+        arg(withdrawID, t.UInt64)
+      ],
+      proposer: fcl.authz,
+      payer: fcl.authz,
+      authorizations: [fcl.authz],
+      limit: 999
+    });
+
+    console.log('Transaction Id', transactionId);
+    fcl.tx(transactionId).subscribe(res => {
+      console.log(res);
+      if (res.status === 0 || res.status === 1) {
+        setTxStatus('Pending...');
+      } else if (res.status === 2) {
+        setTxStatus('Finalized...');
+      } else if (res.status === 3) {
+        setTxStatus('Executed...');
+      } else if (res.status === 4) {
+        setTxStatus('Sealed!');
+        window.location.reload();
+      }
+    });
+  }
 
   return (
     <>
@@ -122,6 +174,11 @@ export default function Collected() {
                     <p>{`Attribute 2: ${nft.att2}`}</p>
                     <p>{`Attribute 3: ${nft.att3}`}</p>
                     <p>{`Attribute 4: ${nft.att4}`}</p>
+                    <input type="text" onChange={e => setRecipient(e.target.value)}></input>
+                    <button onClick={() => {
+                      transferNFT(recipient, nft.id);
+                      setRecipient('');
+                    }}>Transfer</button>
                   </div>
                 ))
               ) : collectionCreated ? (
@@ -133,18 +190,25 @@ export default function Collected() {
                     <div className="no-nft-message">
                       <h1>Looks like you don't have a collection created in your account yet. Let's fix that!</h1>
                       <button onClick={createCollection}>Create Collection</button>
-                      {txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' ? (
-                        <div>
-                          <BeatLoader color="#123abc" loading={true} size={15} />
-                          <p>{txStatus}</p>
-                        </div>
-                      ) : (
-                        <p>{txStatus}</p>
-                      )}
                     </div>
                   )}
             </div>
         </div>
+        {txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' || txStatus === 'Sealed!' ? (
+          <div className="loader-popup">
+              <ProgressBar
+                height="80"
+                width="80"
+                ariaLabel="progress-bar-loading"
+                wrapperStyle={{}}
+                wrapperClass="progress-bar-wrapper"
+                borderColor = '#F4442E'
+                barColor = '#51E5FF'
+              />
+              <p>{txStatus}</p>
+              {txStatus === 'Sealed!' && <button onClick={() => setTxStatus('Run Transaction')}>OK</button>}
+          </div>
+      ) : null}
     </>
 );
 }

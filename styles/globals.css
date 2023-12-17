@@ -139,3 +139,14 @@ a:hover {
     border: none;
     border-radius: 5px;
 }
+.loader-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999; /* This ensures the loader appears above other elements */
+    background: rgba(0, 0, 0, 0.7); /* This gives a semi-transparent background */
+    color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+}

@@ -17,12 +17,14 @@ const Navbar = () => {
     })
   }, [])
 
-  function handleAuthentication () {
+  async function handleAuthentication () {
     if (user.loggedIn) {
-      fcl.unauthenticate()
+      fcl.unauthenticate();
     } else {
-      fcl.authenticate()
+      await fcl.authenticate();
     }
+    await fcl.currentUser().snapshot();
+    window.location.reload();
   }
 
   return (
