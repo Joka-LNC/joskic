@@ -248,7 +248,7 @@ export default function Mint() {
               {nfts.map((nft, index) => (
                 <div key={index} className="nft">
                   <h2>{`ID: ${nft.id}`}</h2>
-                  <p>{`Name: ${nft.name}}`}</p>
+                  <p>{`Name: ${nft.name}`}</p>
                   <p>{`Attribute 1: ${nft.att1}`}</p>
                   <p>{`Attribute 2: ${nft.att2}`}</p>
                   <p>{`Attribute 3: ${nft.att3}`}</p>
