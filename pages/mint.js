@@ -39,20 +39,16 @@ export default function Mint() {
         args: (arg, t) => [arg(userAddress, t.Address)]
       }).then(response => {
         if (response) {
-          // Collection capability found, handle accordingly
           setcollectionCreated(true)
         } else {
-          // No collection capability, handle accordingly
           setcollectionCreated(false)
         }
       }).catch(error => {
         console.error('Error checking collection capability:', error)
-        // Handle error accordingly
         setcollectionCreated(false)
       })
     } catch (error) {
       console.error('Error in try block:', error)
-      // Handle error accordingly
       setcollectionCreated(false)
     }
   }
@@ -282,8 +278,8 @@ export default function Mint() {
       {txStatus === 'Pending...' || txStatus === 'Finalized...' || txStatus === 'Executed...' || txStatus === 'Sealed!' ? (
         <div className="loader-popup">
           <ProgressBar
-            height="80"
-            width="80"
+            height="150"
+            width="150"
             ariaLabel="progress-bar-loading"
             wrapperStyle={{}}
             wrapperClass="progress-bar-wrapper"

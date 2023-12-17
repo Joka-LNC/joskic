@@ -45,22 +45,18 @@ export default function Collected() {
           args: (arg, t) => [arg(userAddress, t.Address)],
         }).then(response => {
           if (response.length === 0) {
-            // No NFTs, redirect to claim page or handle accordingly
             setCollectionEmpty(true);
             setCollectionCreated(true);
           } else {
-            // NFTs found, update state or handle accordingly
             setNfts(response);
             setCollectionCreated(true);
           }
         }).catch(error => {
           console.error('Error fetching NFTs:', error);
-          // Handle error accordingly
           setCollectionCreated(false);
         });
       } catch (error) {
         console.error('Error in try block:', error);
-        // Handle error accordingly
         setCollectionCreated(false);
       }
     }
