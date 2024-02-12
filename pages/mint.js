@@ -230,7 +230,7 @@ export default function Mint() {
       <Head>
         <title>Završni rad Ivan Joskić</title>
         <meta charset="UTF-8"/>
-        <meta name="description" content="Završni rad Ivan Joskić"/>
+        <meta name="description" content="Završni rad"/>
         <meta name="keywords" content="HTML, CSS, JavaScript"/>
         <meta name="author" content="Ivan Joskić"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
